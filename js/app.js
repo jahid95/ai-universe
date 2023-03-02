@@ -58,10 +58,9 @@ const displayData = (items, dataLimit) => {
         </div>
       </div>
       <div>
-      <button onclick="itemDetails('${id}')" class="border-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-      <i class="bg-danger-subtle text-danger rounded-circle p-2 fa-solid fa-arrow-right"></i>    
-  </button>
-      
+      <button onclick="itemDetails('${id}')" class="border-0 bg-white" data-bs-toggle="modal" data-bs-target="#myModal">
+      <i class="bg-danger-subtle text-danger rounded-circle p-2 fa-solid fa-arrow-right"></i> 
+    </button>     
       </div>
       </div>
         `;
@@ -72,15 +71,47 @@ const displayData = (items, dataLimit) => {
 
 loadData(6)
 
-const itemDetails = id =>{
+const itemDetails = id => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
     fetch(url)
-    .then(res => res.json())
-    .then(data => displayItemDetails(data.data))
+        .then(res => res.json())
+        .then(data => displayItemDetails(data.data))
 }
 
-const displayItemDetails = details =>{
+const displayItemDetails = details => {
     console.log(details);
+    const modalRight = document.getElementById('modal-right');
+    const modalLeft = document.getElementById('modal-left');
+    modalRight.textContent ='';
+    modalLeft.textContent ='';
+    const divRight = document.createElement('div');
+    divRight.classList.add('col');
+    divRight.innerHTML = `
+    <div class="card p-4">
+    <h2 class="card-title">${details.description}</h2>
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a longer card with supporting text below as a
+            natural lead-in to additional content. This content is a little bit longer.
+        </p>
+    </div>
+    </div>    
+    `;
+    modalRight.appendChild(divRight);
+    const divLeft = document.createElement('div');
+    divLeft.classList.add('col');
+    divLeft.innerHTML =`
+    <div class="card p-4">
+    <img src="${details.image_link[1]}" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a longer card with supporting text below as a
+            natural lead-in to additional content. This content is a little bit
+            longer.</p>
+    </div>
+    </div>
+    `;
+    modalLeft.appendChild(divLeft);
 }
 
 document.getElementById('btn-seeMore').addEventListener('click', function () {
