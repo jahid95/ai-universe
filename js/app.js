@@ -1,37 +1,41 @@
-const toggleSpinner = isLoading =>{
+const toggleSpinner = isLoading => {
     const spinner = document.getElementById('spinner');
-    if(isLoading){
+    if (isLoading) {
         spinner.classList.remove('d-none');
-    }
-    else{
+    } else {
         spinner.classList.add('d-none');
-    }    
+    }
 }
 
 
-const loadData = dataLimit =>{
+const loadData = dataLimit => {
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
-    .then(res => res.json())
-    .then(data => displayData(data.data.tools, dataLimit))
+        .then(res => res.json())
+        .then(data => displayData(data.data.tools, dataLimit))
     toggleSpinner(true);
 }
 
-const displayData = (items, dataLimit) =>{    
-    console.log(items);
+const displayData = (items, dataLimit) => {
+    // console.log(items);
     const cardContainer = document.getElementById('card-container');
     const seeMoreBtn = document.getElementById('btn-seeMore');
 
-    if(dataLimit && items.length > 6){
-        items = items.slice(0,6);
+    if (dataLimit && items.length > 6) {
+        items = items.slice(0, 6);
         seeMoreBtn.classList.remove('d-none');
-    }
-    else{
+    } else {
         seeMoreBtn.classList.add('d-none');
     }
-    
+
     items.forEach(item => {
-        const {image, features, name, published_in} = item;
+        const {
+            image,
+            features,
+            name,
+            published_in,
+            id
+        } = item;
         const div = document.createElement('div');
         div.classList.add('col');
         div.innerHTML = `
@@ -54,7 +58,10 @@ const displayData = (items, dataLimit) =>{
         </div>
       </div>
       <div>
-      <i class="bg-danger-subtle text-danger rounded-circle p-2 fa-solid fa-arrow-right"></i>
+      <button onclick="itemDetails('${id}')" class="border-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      <i class="bg-danger-subtle text-danger rounded-circle p-2 fa-solid fa-arrow-right"></i>    
+  </button>
+      
       </div>
       </div>
         `;
@@ -65,11 +72,17 @@ const displayData = (items, dataLimit) =>{
 
 loadData(6)
 
-document.getElementById('btn-seeMore').addEventListener('click', function(){
+const itemDetails = id =>{
+    const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayItemDetails(data.data))
+}
+
+const displayItemDetails = details =>{
+    console.log(details);
+}
+
+document.getElementById('btn-seeMore').addEventListener('click', function () {
     loadData();
 })
-
-
-
-
-
