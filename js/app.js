@@ -1,3 +1,4 @@
+/* spinner function */
 const toggleSpinner = isLoading => {
     const spinner = document.getElementById('spinner');
     if (isLoading) {
@@ -7,8 +8,9 @@ const toggleSpinner = isLoading => {
     }
 }
 
+let serial=0;
 
-
+/* fetch data from api */
 const loadData = dataLimit => {
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
@@ -17,6 +19,7 @@ const loadData = dataLimit => {
     toggleSpinner(true);
 }
 
+/* // condition function for array slice  */
 const conditionData = (items, dataLimit)=>{
     const seeMoreBtn = document.getElementById('btn-seeMore');
 
@@ -32,26 +35,26 @@ const conditionData = (items, dataLimit)=>{
     
 }
 
-
+/* // display data in ui */
 const displayData = (items, dataLimit) => {
     console.log(items[3]);
-
-    // console.log(items);
-    const cardContainer = document.getElementById('card-container');
-    
-
+    const cardContainer = document.getElementById('card-container');  
+    /* condition for short by date */
     if (dataLimit === true) {
-        items.sort((a, b) => {
-            return new Date(b.published_in) - new Date(a.published_in); // ascending
-        })
+        if(serial%2 === 0){
+            items.sort((a, b) => {
+                return new Date(b.published_in) - new Date(a.published_in); // 
+            })
+        }
+            else {
+                items.sort((a, b) => {
+                    return new Date(a.published_in) - new Date(b.published_in); 
+                })
+            }       
+        }
         cardContainer.textContent = '';
         document.getElementById('btn-seeMore').classList.add('d-none');
-
-        
-    } else {
-        // console.log('not array');
-    }
-
+    /* loop through in array of items */
     items.forEach(item => {
         const {
             image,
@@ -94,7 +97,7 @@ const displayData = (items, dataLimit) => {
 }
 
 
-
+/* fetch item details on api */
 const itemDetails = id => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
     fetch(url)
@@ -102,6 +105,8 @@ const itemDetails = id => {
         .then(data => displayItemDetails(data.data))
 }
 
+
+/* display item details in ui */
 const displayItemDetails = details => {
     console.log(details);
     const {
@@ -121,7 +126,7 @@ const displayItemDetails = details => {
     const divRight = document.createElement('div');
     divRight.classList.add('col');
     divRight.innerHTML = `
-    <div class="card p-4 bg-danger-subtle">
+    <div class="card p-4 bg-danger-subtle  border-0">
     <h2 class="card-title">${description}</h2>
     <div class="card-body">
     <div class="d-flex justify-content-around p-3 text-danger">
@@ -153,9 +158,9 @@ const displayItemDetails = details => {
         <div class=mr-5"">
         <h3>Integrations</h3>
         <ul>
-          <li>${integrations[0]? integrations[0] : 'oops not found data'}</li>
-          <li>${integrations[1]? integrations[1] : 'oops not found data'}</li>
-          <li>${integrations[2]? integrations[2] : 'oops not found data'}</li>        
+          <li>${integrations? integrations[0] : 'oops not found data'}</li>
+          <li>${integrations? integrations[1] : 'oops not found data'}</li>
+          <li>${integrations? integrations[2] : 'oops not found data'}</li>        
           </ul>
         </div>
         </div>
@@ -166,32 +171,31 @@ const displayItemDetails = details => {
     const divLeft = document.createElement('div');
     divLeft.classList.add('col');
     divLeft.innerHTML = `
-    <div class="card p-4 h-100">
+    <div class="card p-4 h-100 border-0">
     <img src="${image_link[0]}" class="card-img-top img-fluid" alt="...">
     <div class="card-body text-center">
         <h5 class="card-title">${input_output_examples? input_output_examples[0].input : 'No! Not Yet! Take a break!!!'}</h5>
         <p class="card-text">${input_output_examples? input_output_examples[0].output.slice(0,140) : 'No! Not Yet! Take a break!!!'}</p>
     </div>
-    <h4 class="bg-danger text-white rounded position-absolute p-2 top-10 end-0"> ${accuracy.score? accuracy.score +' '+ 'accuracy ': ''}</h4>
+    <h4 class="bg-danger text-white rounded position-absolute top-10 end-0">${accuracy.score? accuracy.score +' '+ 'accuracy ': ''}</h4>
     </div>
     `;
     modalLeft.appendChild(divLeft);
 }
 
+/* add event listener for see more data  */
 document.getElementById('btn-seeMore').addEventListener('click', function () {
     loadData();
 })
 
- function loadDataShort(dataLimit){
+/* load data for short by date */
+ const loadDataShort = dataLimit => {
+    serial++;
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
         .then(res => res.json())
         .then(data => displayData(data.data.tools, dataLimit))
     toggleSpinner(true);
  }
-
-
-    
-
 
 loadData(6)
