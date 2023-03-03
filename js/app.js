@@ -34,6 +34,7 @@ const conditionData = (items, dataLimit)=>{
 
 
 const displayData = (items, dataLimit) => {
+    console.log(items[3]);
 
     // console.log(items);
     const cardContainer = document.getElementById('card-container');
@@ -48,7 +49,7 @@ const displayData = (items, dataLimit) => {
 
         
     } else {
-        console.log('not array');
+        // console.log('not array');
     }
 
     items.forEach(item => {
@@ -67,9 +68,9 @@ const displayData = (items, dataLimit) => {
         <div class="card-body">
           <h5 class="card-title">Features</h5>
           <ol>
-          <li>${features[0]}</li>
-          <li>${features[1]}</li>
-          <li>${features[2]}</li>        
+          <li>${features[0]? features[0] : 'oops not found data'}</li>
+          <li>${features[1]? features[1] : 'oops not found data'}</li>
+          <li>${features[2]? features[2] : 'oops not found data'}</li>        
           </ol>
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
@@ -102,14 +103,17 @@ const itemDetails = id => {
 }
 
 const displayItemDetails = details => {
+    console.log(details);
     const {
         image_link,
         input_output_examples,
         description,
         pricing,
-        accuracy
+        accuracy,
+        features,
+        integrations
     } = details;
-    console.log(details);
+    
     const modalRight = document.getElementById('modal-right');
     const modalLeft = document.getElementById('modal-left');
     modalRight.textContent = '';
@@ -137,10 +141,24 @@ const displayItemDetails = details => {
     <span>${pricing? pricing[2].plan : '/ Enterprise'}<span>
     </h5>
     </div>
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a longer card with supporting text below as a
-            natural lead-in to additional content. This content is a little bit longer.
-        </p>
+        <div class="d-flex justify-content-between">
+        <div class="ml-5">
+        <h3>Features</h3>
+        <ul>
+          <li>${features[1]? features[1].feature_name : 'oops not found data'}</li>
+          <li>${features[2]? features[2].feature_name : 'oops not found data'}</li>
+          <li>${features[3]? features[3].feature_name : 'oops not found data'}</li>        
+          </ul>
+        </div>
+        <div class=mr-5"">
+        <h3>Integrations</h3>
+        <ul>
+          <li>${integrations[0]? integrations[0] : 'oops not found data'}</li>
+          <li>${integrations[1]? integrations[1] : 'oops not found data'}</li>
+          <li>${integrations[2]? integrations[2] : 'oops not found data'}</li>        
+          </ul>
+        </div>
+        </div>
     </div>
     </div>    
     `;
