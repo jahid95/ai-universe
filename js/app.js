@@ -8,24 +8,47 @@ const toggleSpinner = isLoading => {
 }
 
 
+
 const loadData = dataLimit => {
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
         .then(res => res.json())
-        .then(data => displayData(data.data.tools, dataLimit))
+        .then(data => conditionData(data.data.tools, dataLimit))
     toggleSpinner(true);
 }
 
-const displayData = (items, dataLimit) => {
-    // console.log(items);
-    const cardContainer = document.getElementById('card-container');
+const conditionData = (items, dataLimit)=>{
     const seeMoreBtn = document.getElementById('btn-seeMore');
 
-    if (dataLimit && items.length > 6) {
+    if (dataLimit && items.length > dataLimit) {
         items = items.slice(0, 6);
+        displayData(items, dataLimit)
         seeMoreBtn.classList.remove('d-none');
-    } else {
+    } else {    
+        displayData(items, dataLimit)
+
         seeMoreBtn.classList.add('d-none');
+    }
+    
+}
+
+
+const displayData = (items, dataLimit) => {
+
+    // console.log(items);
+    const cardContainer = document.getElementById('card-container');
+    
+
+    if (dataLimit === true) {
+        items.sort((a, b) => {
+            return new Date(b.published_in) - new Date(a.published_in); // ascending
+        })
+        cardContainer.textContent = '';
+        document.getElementById('btn-seeMore').classList.add('d-none');
+
+        
+    } else {
+        console.log('not array');
     }
 
     items.forEach(item => {
@@ -69,7 +92,7 @@ const displayData = (items, dataLimit) => {
     toggleSpinner(false);
 }
 
-loadData(6)
+
 
 const itemDetails = id => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
@@ -79,12 +102,18 @@ const itemDetails = id => {
 }
 
 const displayItemDetails = details => {
-    const {image_link,input_output_examples,description,pricing,accuracy} = details;
+    const {
+        image_link,
+        input_output_examples,
+        description,
+        pricing,
+        accuracy
+    } = details;
     console.log(details);
     const modalRight = document.getElementById('modal-right');
     const modalLeft = document.getElementById('modal-left');
-    modalRight.textContent ='';
-    modalLeft.textContent ='';
+    modalRight.textContent = '';
+    modalLeft.textContent = '';
     const divRight = document.createElement('div');
     divRight.classList.add('col');
     divRight.innerHTML = `
@@ -118,7 +147,7 @@ const displayItemDetails = details => {
     modalRight.appendChild(divRight);
     const divLeft = document.createElement('div');
     divLeft.classList.add('col');
-    divLeft.innerHTML =`
+    divLeft.innerHTML = `
     <div class="card p-4 h-100">
     <img src="${image_link[0]}" class="card-img-top img-fluid" alt="...">
     <div class="card-body text-center">
@@ -134,3 +163,17 @@ const displayItemDetails = details => {
 document.getElementById('btn-seeMore').addEventListener('click', function () {
     loadData();
 })
+
+ function loadDataShort(dataLimit){
+    const url = 'https://openapi.programming-hero.com/api/ai/tools';
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayData(data.data.tools, dataLimit))
+    toggleSpinner(true);
+ }
+
+
+    
+
+
+loadData(6)
