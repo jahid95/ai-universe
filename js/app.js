@@ -67,7 +67,7 @@ const displayData = (items, dataLimit) => {
         div.classList.add('col');
         div.innerHTML = `
         <div class="card h-100">
-        <img src="${image}" class="card-img-top" alt="...">
+        <img src="${image}" class="card-img-top image" alt="...">
         <div class="card-body">
           <h5 class="card-title">Features</h5>
           <ol>
@@ -117,8 +117,7 @@ const displayItemDetails = details => {
         accuracy,
         features,
         integrations
-    } = details;
-    
+    } = details;  
     const modalRight = document.getElementById('modal-right');
     const modalLeft = document.getElementById('modal-left');
     modalRight.textContent = '';
@@ -158,9 +157,9 @@ const displayItemDetails = details => {
         <div class=mr-5"">
         <h3>Integrations</h3>
         <ul>
-          <li>${integrations? integrations[0] : 'oops not found data'}</li>
-          <li>${integrations? integrations[1] : 'oops not found data'}</li>
-          <li>${integrations? integrations[2] : 'oops not found data'}</li>        
+          <li class="li-item">${(integrations == null)? 'no found data' : integrations[0]? integrations[0] : 'oops not found data'}</li>
+          <li class="li-item">${(integrations == null)? 'no found data' : integrations[1]? integrations[1] : 'oops not found data'}</li>
+          <li class="li-item">${(integrations == null)? 'no found data' : integrations[2]? integrations[2] : 'oops not found data'}</li>      
           </ul>
         </div>
         </div>
@@ -199,3 +198,5 @@ document.getElementById('btn-seeMore').addEventListener('click', function () {
  }
 
 loadData(6)
+
+
