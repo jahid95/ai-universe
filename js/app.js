@@ -159,7 +159,8 @@ const displayItemDetails = details => {
         <ul>
           <li class="li-item">${(integrations == null)? 'no data found' : integrations[0]? integrations[0] : 'oops not found data'}</li>
           <li class="li-item">${(integrations == null)? 'no data found' : integrations[1]? integrations[1] : 'oops not found data'}</li>
-          <li class="li-item">${(integrations == null)? 'no data found' : integrations[2]? integrations[2] : 'oops not found data'}</li>      
+          <li class="li-item">${(integrations == null)? 'no data found' : integrations[2]? integrations[2] : 'oops not found data'}</li>  
+          <li class="li-item">${(integrations == null)? 'no data found' : integrations[3]? integrations[3] : 'oops not found data'}</li>     
           </ul>
         </div>
         </div>
