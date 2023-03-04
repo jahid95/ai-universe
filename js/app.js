@@ -118,6 +118,7 @@ const displayItemDetails = details => {
         features,
         integrations
     } = details;  
+   
     const modalRight = document.getElementById('modal-right');
     const modalLeft = document.getElementById('modal-left');
     modalRight.textContent = '';
@@ -177,7 +178,7 @@ const displayItemDetails = details => {
         <h5 class="card-title">${input_output_examples? input_output_examples[0].input : 'No! Not Yet! Take a break!!!'}</h5>
         <p class="card-text">${input_output_examples? input_output_examples[0].output.slice(0,140) : 'No! Not Yet! Take a break!!!'}</p>
     </div>
-    <h4 class="bg-danger text-white rounded position-absolute top-10 end-0">${accuracy.score? accuracy.score +' '+ 'accuracy ': ''}</h4>
+    <h4 class="bg-danger text-white rounded position-absolute top-10 end-0">${accuracy.score? accuracy.score*100 +' '+ 'accuracy ': ''}</h4>
     </div>
     `;
     modalLeft.appendChild(divLeft);
